@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ramadhani-mycafe</title>
+<style>
+  :root{
+    --bg: #f8efe8;
+    --brown-900: #2b1308;
+    --brown-800: #3b2110;
+    --brown-700: #5a341a;
+    --brown-600: #7a4b2a;
+    --accent: #caa07a;
+    --card: #fff7f2;
+    --glass: rgba(255,255,255,0.6);
+    --radius: 14px;
+    --gap: 16px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, var(--bg), #f3e6dd);
+    color: var(--brown-900);
+    display:flex;
+    justify-content:center;
+    padding:28px;
+  }
+
+  .site {
+    width:100%;
+    max-width:1200px;
+    min-height:80vh;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    border-radius:20px;
+    box-shadow: 0 30px 60px rgba(38,22,12,0.15);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* HEADER */
+  header.header{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding:20px 26px;
+    border-bottom: 1px solid rgba(43,19,8,0.06);
+    background: linear-gradient(90deg, rgba(122,75,45,0.04), rgba(122,75,45,0.02));
+    gap:12px;
+  }
+
+  .brand-left {
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .logo {
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    overflow:hidden;
+  }
+
+  .logo img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .brand-title {
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+  }
+  .brand-title .name {
+    font-weight:800;
+    font-size:1.15rem;
+    color:var(--brown-900);
+    letter-spacing:0.6px;
+  }
+  .brand-title .tag {
+    font-size:0.78rem;
+    color:var(--brown-700);
+    margin-top:2px;
+  }
+
+  .main {
+    display:flex;
+    gap:18px;
+    padding:22px;
+    flex:1;
+    overflow:hidden;
+  }
+
+  .sidebar {
+    width:220px;
+    min-width:180px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:flex-start;
+    flex-shrink:0;
+  }
+  .side-title {
+    font-weight:800;
+    color:var(--brown-800);
+    margin-bottom:6px;
+  }
+
+  .side-buttons {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    width:100%;
+  }
+  .side-btn {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    width:100%;
+    color:var(--brown-900);
+    background: transparent;
+    border: 1px solid rgba(43,19,8,0.04);
+    transition: background .15s ease, transform .12s ease;
+  }
+  .side-btn:hover { transform: translateX(4px); background: rgba(122,75,45,0.04); }
+  .side-btn.active { background: linear-gradient(180deg, rgba(122,75,45,0.12), rgba(122,75,45,0.06)); box-shadow: 0 6px 20px rgba(121,69,36,0.06) }
+
+  .content {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+    padding-right:10px;
+  }
+
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap:16px;
+    align-items:start;
+  }
+
+  .card {
+    background:var(--card);
+    border-radius:12px;
+    padding:12px;
+    box-shadow: 0 10px 22px rgba(42,22,12,0.06);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+  }
+
+  .prod-img {
+    width:100%;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    border-radius:10px;
+    background:#efe2d8;
+  }
+
+  .prod-img img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .prod-name { font-weight:800; color:var(--brown-800); text-align:center; }
+  .prod-price { color:var(--brown-700); font-weight:700; }
+  .buy-btn {
+    background:var(--brown-800);
+    color:#fff;
+    padding:8px 12px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow: 0 8px 18px rgba(43,19,8,0.12);
+    transition: transform .12s ease;
+  }
+  .buy-btn:hover { transform: translateY(-3px) }
+
+  footer.footer {
+    padding:12px 22px;
+    border-top:1px solid rgba(43,19,8,0.04);
+    font-size:0.9rem;
+    color:var(--brown-700);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+
+  /* MODAL */
+  .modal-backdrop {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+  }
+  .modal {
+    background:#fff;
+    padding:22px;
+    border-radius:14px;
+    text-align:center;
+    max-width:420px;
+    width:90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popIn .25s ease;
+  }
+  @keyframes popIn {from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .modal h3{margin-bottom:10px;color:var(--brown-800);}
+  .modal p{color:var(--brown-700);}
+  .paynum{margin:10px 0;font-weight:800;color:var(--brown-800);}
+  .modal .buy-btn{margin-top:10px;}
+
+  /* RESPONSIVE HP */
+  @media (max-width: 900px) {
+    .main { flex-direction:column; padding:16px; gap:16px; }
+    .sidebar { width:100%; flex-direction:column; align-items:center; text-align:center; }
+    .side-buttons {
+      flex-direction:row;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .side-btn {
+      flex:0 0 auto;
+      width:auto;
+      justify-content:center;
+      padding:10px 16px;
+    }
+    .content { padding:0 4px 12px; }
+  }
+</style>
+</head>
+<body>
+  <div class="site">
+    <header class="header">
+      <div class="brand-left">
+        <div class="logo"><img src="logo.jpeg" alt="Logo Cafe"></div>
+        <div class="brand-title">
+          <div class="name">ramadhani-mycafe</div>
+          <div class="tag">coffe modern by arga</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar">
+        <div class="side-title">Menu</div>
+        <div class="side-buttons">
+          <div class="side-btn active" data-target="drinks">Minuman</div>
+          <div class="side-btn" data-target="foods">Makanan</div>
+          <div class="side-btn" data-target="social">Social</div>
+        </div>
+      </aside>
+
+      <section class="content">
+        <!-- Drinks -->
+        <div id="drinks" class="panel">
+          <h2>Minuman Pilihan</h2>
+          <div class="grid">
+            <div class="card">
+              <div class="prod-img"><img src="minuman.jpeg" alt="Espresso"></div>
+              <div class="prod-name">Espresso</div>
+              <div class="prod-price">Rp 12.000</div>
+              <button class="buy-btn" data-name="Espresso">Beli</button>
+            </div>
+            <div class="card">
+              <div class="prod-img"><img src="minuman.jpeg" alt="Cappuccino"></div>
+              <div class="prod-name">Cappuccino</div>
+              <div class="prod-price">Rp 18.000</div>
+              <button class="buy-btn" data-name="Cappuccino">Beli</button>
+            </div>
+            <div class="card">
+              <div class="prod-img"><img src="minuman.jpeg" alt="Latte"></div>
+              <div class="prod-name">Latte</div>
+              <div class="prod-price">Rp 20.000</div>
+              <button class="buy-btn" data-name="Latte">Beli</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foods -->
+        <div id="foods" class="panel" style="display:none">
+          <h2>Makanan Ringan</h2>
+          <div class="grid">
+            <div class="card">
+              <div class="prod-img"><img src="makanan.jpeg" alt="Sandwich"></div>
+              <div class="prod-name">Sandwich</div>
+              <div class="prod-price">Rp 25.000</div>
+              <button class="buy-btn" data-name="Sandwich">Beli</button>
+            </div>
+            <div class="card">
+              <div class="prod-img"><img src="makanan.jpeg" alt="Donut"></div>
+              <div class="prod-name">Donut</div>
+              <div class="prod-price">Rp 8.000</div>
+              <button class="buy-btn" data-name="Donut">Beli</button>
+            </div>
+            <div class="card">
+              <div class="prod-img"><img src="makanan.jpeg" alt="Croissant"></div>
+              <div class="prod-name">Croissant</div>
+              <div class="prod-price">Rp 15.000</div>
+              <button class="buy-btn" data-name="Croissant">Beli</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div id="social" class="panel" style="display:none">
+          <h2>Follow Kami</h2>
+          <div class="social-list">
+            <a href="https://tiktok.com" target="_blank">TikTok</a><br>
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div>&copy; <span id="year"></span> argantara</div>
+      <div>Contact: 0851-2274-7150</div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <h3>Pesanan Terkirim</h3>
+      <p>Produk telah dikirim ke admin.<br>Silakan lakukan pembayaran ke nomor di bawah ini dan sertakan bukti pembayaran ke kasir.</p>
+      <div class="paynum">0851-2274-7150</div>
+      <button id="closeModal" class="buy-btn">Tutup</button>
+    </div>
+  </div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const panels = document.querySelectorAll('.panel');
+const sideBtns = document.querySelectorAll('.side-btn');
+
+function showPanel(id){
+  panels.forEach(p => p.style.display = (p.id === id) ? '' : 'none');
+  sideBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+}
+sideBtns.forEach(b => b.onclick = ()=> showPanel(b.dataset.target));
+
+const buyBtns = document.querySelectorAll('.buy-btn');
+const modal = document.getElementById('modalBackdrop');
+const closeModal = document.getElementById('closeModal');
+buyBtns.forEach(b=>{
+  b.onclick = ()=> {
+    modal.style.display = 'flex';
+  };
+});
+closeModal.onclick = ()=> modal.style.display = 'none';
+window.onclick = e=>{ if(e.target === modal) modal.style.display='none'; };
+</script>
+</body>
+</html>
